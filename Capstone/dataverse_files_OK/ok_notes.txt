@@ -1,0 +1,180 @@
+
+Data from Harvard team saved in OK_2002to2008_wNV.csv
+
+Add state and county codes, split up precinct, and concatenate statfp10, countyfp10, and vtd to create geoid10.
+
+
+use "C:\Users\jrodden\Dropbox\Sloan\OK\ok_elect.dta", clear
+
+joinby geoid10 using  "C:\Users\jrodden\Dropbox\Sloan\OK\ok_elect.dta", unmatched(both)
+
+
+There is a large number of precinct splits and consolidations.  
+
+I tracked them by consulting:
+
+http://geo.ou.edu/MapsFrame.htm
+
+This web page has precinct maps circa 2005 for all counties. 
+
+
+Then genereate fix_id that links precincts together. Paste in. Save.
+
+save "C:\Users\jrodden\Dropbox\Sloan\OK\ok_temp.dta"  
+
+
+
+
+egen vap_sum = sum(vap), by(fix_id)
+
+replace vap_sum = vap if fix_id==.
+
+gen vap_share = vap/vap_sum
+
+egen sum_pres_dvote_08 = sum( pres_dvote_08) if fix_id~=., by(fix_id)
+
+egen sum_pres_rvote_08 = sum( pres_rvote_08) if fix_id~=., by(fix_id)
+
+egen sum_pres_tot_08 = sum( pres_tot_08) if fix_id~=., by(fix_id)
+
+egen sum_uss_rvote_08 = sum( uss_rvote_08) if fix_id~=., by(fix_id)
+
+egen sum_uss_dvote_08 = sum( uss_dvote_08) if fix_id~=., by(fix_id)
+
+
+
+gen pres_dvote_08_fix = sum_pres_dvote_08* vap_share
+
+gen pres_rvote_08_fix = sum_pres_rvote_08* vap_share
+
+gen pres_tot_08_fix = sum_pres_tot_08 *vap_share
+
+gen uss_rvote_08_fix = sum_uss_rvote_08*vap_share
+
+gen uss_dvote_08_fix = sum_uss_dvote_08*vap_share
+
+
+replace pres_dvote_08 =  pres_dvote_08_fix if fix_id~=.
+
+replace pres_rvote_08 = pres_rvote_08_fix if fix_id~=.
+
+replace pres_tot_08 = pres_tot_08_fix if fix_id~=.
+
+replace uss_rvote_08 = uss_rvote_08_fix if fix_id~=.
+
+replace uss_dvote_08 = uss_dvote_08_fix if fix_id~=.
+
+
+
+
+
+egen sum_uss_dvote_06 = sum(uss_dvote_06) if fix_id~=., by(fix_id)
+
+egen sum_uss_rvote_06 = sum(uss_rvote_06) if fix_id~=., by(fix_id)
+
+egen sum_gov_dvote_06 = sum(gov_dvote_06) if fix_id~=., by(fix_id)
+
+egen sum_gov_rvote_06 = sum(gov_rvote_06) if fix_id~=., by(fix_id)
+
+egen sum_ltgov_dvote_06 = sum(ltgov_dvote_06) if fix_id~=., by(fix_id)
+
+egen sum_ltgov_rvote_06 = sum(ltgov_rvote_06) if fix_id~=., by(fix_id)
+
+egen sum_ag_dvote_06 = sum(ag_dvote_06) if fix_id~=., by(fix_id)
+
+egen sum_ag_rvote_06 = sum(ag_rvote_06) if fix_id~=., by(fix_id)
+
+egen sum_pres_dvote_04 = sum(pres_dvote_04) if fix_id~=., by(fix_id)
+
+egen sum_pres_rvote_04 = sum(pres_rvote_04) if fix_id~=., by(fix_id)
+
+egen sum_uss_dvote_04 = sum(uss_dvote_04) if fix_id~=., by(fix_id)
+
+egen sum_uss_rvote_04 = sum(uss_rvote_04) if fix_id~=., by(fix_id)
+
+
+gen uss_dvote_06_fix = sum_uss_dvote_06* vap_share
+
+gen uss_rvote_06_fix = sum_uss_rvote_06* vap_share
+
+gen gov_dvote_06_fix = sum_gov_dvote_06* vap_share
+
+gen gov_rvote_06_fix = sum_gov_rvote_06* vap_share
+
+gen ltgov_dvote_06_fix = sum_ltgov_dvote_06* vap_share
+
+gen ltgov_rvote_06_fix = sum_ltgov_rvote_06* vap_share
+
+gen ag_dvote_06_fix = sum_ag_dvote_06* vap_share
+
+gen ag_rvote_06_fix = sum_ag_rvote_06* vap_share
+
+gen uss_dvote_04_fix = sum_uss_dvote_04* vap_share
+
+gen uss_rvote_04_fix = sum_uss_rvote_04* vap_share
+
+gen pres_dvote_04_fix = sum_pres_dvote_04* vap_share
+
+gen pres_rvote_04_fix = sum_pres_rvote_04* vap_share
+
+
+
+
+replace uss_dvote_06 =  uss_dvote_06_fix if fix_id~=.
+
+replace uss_rvote_06 =  uss_rvote_06_fix if fix_id~=.
+
+replace gov_dvote_06 =  gov_dvote_06_fix if fix_id~=.
+
+replace gov_rvote_06 =  gov_rvote_06_fix if fix_id~=.
+
+replace ltgov_dvote_06 =  ltgov_dvote_06_fix if fix_id~=.
+
+replace ltgov_rvote_06 =  ltgov_rvote_06_fix if fix_id~=.
+
+replace ag_dvote_06 =  ag_dvote_06_fix if fix_id~=.
+
+replace ag_rvote_06 =  ag_rvote_06_fix if fix_id~=.
+
+replace uss_dvote_04 =  uss_dvote_04_fix if fix_id~=.
+
+replace uss_rvote_04 =  uss_rvote_04_fix if fix_id~=.
+
+replace pres_dvote_04 =  pres_dvote_04_fix if fix_id~=.
+
+replace pres_rvote_04 =  pres_rvote_04_fix if fix_id~=.
+
+
+
+
+replace p_08 = pres_dvote_08/(pres_dvote_08+pres_rvote_08) if fix_id~=.
+
+replace s_08 = uss_dvote_08/(uss_dvote_08 + uss_rvote_08)
+
+
+replace s_04 = uss_dvote_04/(uss_dvote_04 + uss_rvote_04)
+
+replace p_04 = pres_dvote_04/(pres_dvote_04 + pres_rvote_04)
+
+
+replace g_06 = gov_dvote_06/(gov_dvote_06 + gov_rvote_06)
+
+replace l_06 = ltgov_dvote_06/(ltgov_dvote_06 + ltgov_rvote_06)
+
+replace a_06 = ag_dvote_06/(ag_dvote_06 + ag_rvote_06)
+
+replace s_06 = uss_dvote_06/(uss_dvote_06 + uss_rvote_06)
+
+
+
+drop av ndv nrv
+
+
+gen av = (p_08 + s_08 + s_04 + p_04 + g_06 + l_06 + a_06)/7
+
+gen ndv = av*pres_tot_08
+gen ndr = (1-av)*pres_tot_08
+
+saveold "C:\Users\jrodden\Dropbox\Sloan\OK\ok_ready_merge_old.dta"
+
+

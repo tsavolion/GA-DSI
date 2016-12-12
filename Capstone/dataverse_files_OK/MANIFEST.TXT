@@ -1,0 +1,8 @@
+ok_final.dbf (application/octet-stream) 3093062 bytes.
+ok_final.sbn (application/octet-stream) 22788 bytes.
+ok_final.sbx (application/octet-stream) 1940 bytes.
+ok_final.shp (application/octet-stream) 20453296 bytes.
+ok_final.shx (application/octet-stream) 17308 bytes.
+ok_final.tab (text/tab-separated-values) 1042550 bytes.
+ok_notes.txt (text/plain; charset=US-ASCII) 4643 bytes.
+OK_Shapefile.zip (application/zip) 11697034 bytes.
